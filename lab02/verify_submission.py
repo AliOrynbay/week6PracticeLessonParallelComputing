@@ -17,7 +17,6 @@ def main():
         print("[FAIL] Student ID cannot be empty.")
         sys.exit(1)
 
-    # 1. Verify Task 2
     try:
         import task2_stencil_1d as t2
         N = 10007
@@ -30,7 +29,6 @@ def main():
         print(f"[FAIL] Task 2: {e}")
         sys.exit(1)
 
-    # 2. Verify Task 3
     try:
         import task3_grid_stride as t3
         N = 100000
@@ -43,12 +41,10 @@ def main():
         print(f"[FAIL] Task 3: {e}")
         sys.exit(1)
 
-    # 3. Verify Task 4
     try:
         import task4_sobel_2d as t4
         test_img = np.ones((64, 64), dtype=np.float32)
         sobel_res = t4.run_sobel(test_img)
-        # Uniform image must have zero interior gradient
         assert np.max(np.abs(sobel_res[1:-1, 1:-1])) < 1e-5, "Task 4 interior gradient != 0 for flat field"
         assert np.all(sobel_res[0, :] == 0.0), "Task 4 border rows not zeroed"
         assert np.all(sobel_res[:, 0] == 0.0), "Task 4 border columns not zeroed"
@@ -57,7 +53,6 @@ def main():
         print(f"[FAIL] Task 4: {e}")
         sys.exit(1)
 
-    # Cryptographic Checksum Token Generation
     hasher = hashlib.sha256()
     hasher.update(student_id.encode('utf-8'))
     try:
