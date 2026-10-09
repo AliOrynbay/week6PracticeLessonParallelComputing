@@ -24,7 +24,7 @@ def kernel_divergent(y, n):
     idx = cuda.grid(1)
     if idx < n:
         v = y[idx]
-        if idx % 2 == 0:  # adjacent threads diverge inside every warp
+        if idx % 2 == 0:  
             for _ in range(ITERS):
                 v = v * 1.0001 + 0.0001
         else:
@@ -39,7 +39,7 @@ def kernel_warp_aligned(y, n):
     if idx < n:
         v = y[idx]
         warp_id = idx // 32
-        if warp_id % 2 == 0:  # whole warps take the same path
+        if warp_id % 2 == 0:  
             for _ in range(ITERS):
                 v = v * 1.0001 + 0.0001
         else:
@@ -49,7 +49,7 @@ def kernel_warp_aligned(y, n):
 
 
 def bench(kernel, d_y, blocks):
-    kernel[blocks, THREADS](d_y, N)  # warm-up (includes JIT compile)
+    kernel[blocks, THREADS](d_y, N)  
     cuda.synchronize()
     times = []
     for _ in range(TRIALS):
@@ -63,7 +63,7 @@ def bench(kernel, d_y, blocks):
 
 def main():
     h_y = np.ones(N, dtype=np.float32)
-    d_y = cuda.to_device(h_y)  # transfer happens once, outside all timing
+    d_y = cuda.to_device(h_y)  
     blocks = (N + THREADS - 1) // THREADS
 
     results = {}
